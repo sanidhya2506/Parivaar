@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive Access | Parivaar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --paper: #F4F1EA;
+            --ink: #1A1A1A;
+            --blue: #3D5A80;
+            --border: rgba(26, 26, 26, 0.2);
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--paper); 
+            color: var(--ink); 
+            margin: 0; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures body takes full height */
+        }
+
+        /* HEADER */
+        header {
+            background: var(--paper); border-bottom: 2px solid var(--ink);
+            padding: 1.2rem 8%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 2000;
+        }
+        .logo { font-size: 2.2rem; font-weight: 900; color: var(--ink); text-decoration: none; letter-spacing: -2px; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--ink); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* HAMBURGER STYLES */
+        .menu-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--ink); padding: 5px; }
+
+        /* LOGIN BOX */
+        .login-section {
+            flex: 1; /* Pushes footer down */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 8%;
+        }
+
+        .login-card {
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            padding: 3rem;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.2);
+        }
+
+        .login-card h1 {
+            font-family: 'Lora', serif;
+            font-size: 2.5rem;
+            margin: 0 0 1rem 0;
+            letter-spacing: -1px;
+        }
+
+        .login-card p {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 3rem;
+        }
+
+        .btn-google {
+            width: 100%;
+            padding: 1rem;
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-google:hover {
+            background: var(--blue);
+            transform: translateY(-2px);
+        }
+
+        /* FOOTER */
+        footer { 
+            background: var(--paper); padding: 5rem 8% 4rem; border-top: 2px solid var(--ink); text-align: center; 
+        }
+        .footer-logo { font-size: 1.8rem; font-weight: 900; margin-bottom: 1.5rem; }
+        .made-by { font-weight: 900; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .heart { color: var(--ink); display: inline-block; animation: pump 1.2s infinite; font-size: 1.4rem; }
+        .social-icons { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+        .social-icons a { color: var(--ink); }
+        @keyframes pump { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+        /* MOBILE RESPONSIVE HAMBURGER LOGIC */
+        @media (max-width: 768px) {
+            header { padding: 1rem 5%; }
+            .menu-toggle { display: block; } 
+
+            .nav-links { 
+                position: fixed; 
+                top: 72px; 
+                left: 0; 
+                width: 100%; 
+                background: var(--paper); 
+                flex-direction: column; 
+                gap: 0;
+                border-bottom: 2px solid var(--ink);
+                transform: translateY(-150%); 
+                transition: transform 0.4s ease-in-out;
+                z-index: 1999;
+                padding: 1rem 0;
+            }
+
+            .nav-links.active { transform: translateY(0); }
+
+            .nav-links a { 
+                width: 100%; 
+                text-align: center; 
+                padding: 1.5rem; 
+                border-bottom: 1px solid rgba(0,0,0,0.05); 
+            }
+
+            .login-card { padding: 2rem; border: none; background: transparent; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">परिवार</a>
+        
+        <button class="menu-toggle" id="menuToggle">
+            <i data-lucide="menu"></i>
+        </button>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html">Archives</a>
+            <a href="share.html">Document</a>
+            <a href="profile.html">Records</a>
+        </nav>
+    </header>
+
+    <main class="login-section">
+        <div class="login-card">
+            <span style="font-size: 0.7rem; font-weight: 900; letter-spacing: 3px; color: var(--blue); text-transform: uppercase;">Identity Verification</span>
+            <h1>Archive Access</h1>
+            <p>To ensure the integrity of the collective memory, please verify your identity to continue.</p>
+            
+            <button class="btn-google" id="googleLogin">
+                <i data-lucide="log-in" size="18"></i>
+                Sign in with Google
+            </button>
+
+            <p style="font-size: 0.75rem; margin-top: 2rem; font-style: normal; opacity: 0.6;">
+                By signing in, you agree to document with honesty and respect for the collective wisdom.
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-logo">परिवार</div>
+        <div class="made-by">Made with <span class="heart">♡</span> by Sanidhya</div>
+        <div class="social-icons">
+            <a href="https://github.com/sanidhya2506"><i data-lucide="github"></i></a>
+            <a href="https://www.linkedin.com/in/sanidhya-sharma-22ba91237/"><i data-lucide="linkedin"></i></a>
+        </div>
+        <p style="font-size: 0.7rem; margin-top: 2.5rem; opacity: 0.5; letter-spacing: 1px;">&copy; 2026 ARCHIVE PROJECT</p>
+    </footer>
+
+    <script type="module">
+        import { auth } from './firebase-config.js';
+        import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+        lucide.createIcons();
+
+        // HAMBURGER TOGGLE LOGIC
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.setAttribute('data-lucide', 'x');
+            } else {
+                icon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        });
+
+        // Auth Logic
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = "share.html";
+            }
+        });
+
+        const googleBtn = document.getElementById('googleLogin');
+        googleBtn.addEventListener('click', async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                window.location.href = "share.html";
+            } catch (error) {
+                console.error("Login failed:", error);
+                alert("Archive Access Denied: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Archive | Parivaar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --paper: #F4F1EA;
+            --ink: #1A1A1A;
+            --blue: #3D5A80;
+            --border: rgba(26, 26, 26, 0.2);
+            --red: #8B0000;
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--paper); 
+            color: var(--ink); 
+            margin: 0; 
+            line-height: 1.6; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--paper); border-bottom: 2px solid var(--ink);
+            padding: 1.2rem 8%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 2000;
+        }
+        .logo { font-size: 2.2rem; font-weight: 900; color: var(--ink); text-decoration: none; letter-spacing: -2px; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--ink); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* HAMBURGER BUTTON STYLE */
+        .menu-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--ink); padding: 5px; }
+
+        .profile-section { padding: 6rem 8%; max-width: 1000px; margin: 0 auto; flex: 1; width: 100%; }
+        .user-meta { border-bottom: 1px solid var(--ink); padding-bottom: 3rem; margin-bottom: 4rem; display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; }
+        .user-info h1 { font-family: 'Lora', serif; font-size: 3.5rem; margin: 0; line-height: 1; letter-spacing: -2px; }
+        .user-info p { margin: 10px 0 0; font-weight: 700; opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
+
+        .btn-logout { 
+            background: transparent; border: 1px solid var(--ink); padding: 10px 20px; 
+            font-weight: 800; font-size: 0.75rem; text-transform: uppercase; cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-logout:hover { background: var(--ink); color: var(--paper); }
+
+        .section-label { font-size: 0.7rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 3rem; display: block; }
+        
+        .my-record-card { 
+            padding: 2.5rem 0; 
+            border-bottom: 1px solid var(--border); 
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: center;
+        }
+        .my-record-card:last-child { border-bottom: none; }
+        .record-title { font-family: 'Lora', serif; font-size: 1.8rem; margin: 0; text-decoration: none; color: var(--ink); }
+        .record-date { font-size: 0.75rem; font-weight: 700; opacity: 0.5; display: block; margin-top: 5px; }
+
+        .btn-delete { color: var(--red); background: none; border: none; cursor: pointer; padding: 10px; opacity: 0.4; }
+        .btn-delete:hover { opacity: 1; }
+
+        #authOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--paper); z-index: 3000; display: none;
+            flex-direction: column; align-items: center; justify-content: center; text-align: center;
+            padding: 20px;
+        }
+
+        footer { 
+            background: var(--paper); padding: 5rem 8% 4rem; border-top: 2px solid var(--ink); text-align: center; 
+        }
+        .footer-logo { font-size: 1.8rem; font-weight: 900; margin-bottom: 1.5rem; }
+        .made-by { font-weight: 900; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .heart { color: var(--ink); display: inline-block; animation: pump 1.2s infinite; font-size: 1.4rem; }
+        .social-icons { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+        .social-icons a { color: var(--ink); }
+
+        @keyframes pump { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+        /* RESPONSIVE MOBILE NAV */
+        @media (max-width: 768px) {
+            header { padding: 1rem 5%; }
+            .menu-toggle { display: block; }
+            
+            .nav-links {
+                position: fixed; top: 72px; left: 0; width: 100%; background: var(--paper);
+                flex-direction: column; padding: 0; border-bottom: 2px solid var(--ink);
+                transform: translateY(-150%); transition: 0.4s ease-in-out; z-index: 1999;
+                gap: 0;
+            }
+            .nav-links.active { transform: translateY(0); }
+            .nav-links a { width: 100%; text-align: center; padding: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+
+            .user-info h1 { font-size: 2.2rem; }
+            .user-meta { flex-direction: column; align-items: flex-start; }
+            .btn-logout { width: 100%; margin-top: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="authOverlay">
+        <h2 style="font-family: 'Lora', serif; font-size: 2rem;">Verification Required</h2>
+        <p>You must be signed in to access your private archives.</p>
+        <a href="login.html" style="background: var(--ink); color: var(--paper); text-decoration: none; padding: 1rem 2rem; font-weight: 900; text-transform: uppercase; font-size: 0.8rem; display: inline-block; margin-top: 1rem;">Login Now</a>
+    </div>
+
+    <header>
+        <a href="index.html" class="logo">परिवार</a>
+        
+        <button class="menu-toggle" id="menuToggle">
+            <i data-lucide="menu"></i>
+        </button>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="index.html">Archives</a>
+            <a href="share.html">Document</a>
+            <a href="profile.html">Records</a>
+        </nav>
+    </header>
+
+    <main class="profile-section">
+        <div class="user-meta">
+            <div class="user-info">
+                <p>Personal Archive Access</p>
+                <h1 id="userName">Collector</h1>
+            </div>
+            <button class="btn-logout" id="logoutBtn">Close Session</button>
+        </div>
+
+        <span class="section-label">Your Filed Records</span>
+        <div id="userRecordsContainer">
+            <p>Scanning your secure records...</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-logo">परिवार</div>
+        <div class="made-by">Made with <span class="heart">♡</span> by Sanidhya</div>
+        <div class="social-icons">
+            <a href="https://github.com/sanidhya2506"><i data-lucide="github"></i></a>
+            <a href="https://www.linkedin.com/in/sanidhya-sharma-22ba91237/"><i data-lucide="linkedin"></i></a>
+        </div>
+        <p style="font-size: 0.7rem; margin-top: 2.5rem; opacity: 0.5; letter-spacing: 1px;">&copy; 2026 ARCHIVE PROJECT</p>
+    </footer>
+
+    <script type="module">
+        import { db, auth } from './firebase-config.js';
+        import { collection, query, where, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+        lucide.createIcons();
+
+        // --- HAMBURGER LOGIC ---
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.setAttribute('data-lucide', 'x');
+            } else {
+                icon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        });
+
+        // --- AUTH & DATA LOGIC ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('userName').innerText = user.displayName || "Witness";
+                loadUserRecords(user.uid);
+            } else {
+                document.getElementById('authOverlay').style.display = 'flex';
+            }
+        });
+
+        function loadUserRecords(uid) {
+            const q = query(
+                collection(db, "insights"), 
+                where("userId", "==", uid)
+            );
+
+            onSnapshot(q, (snapshot) => {
+                const container = document.getElementById('userRecordsContainer');
+                container.innerHTML = '';
+
+                if(snapshot.empty) {
+                    container.innerHTML = '<p style="font-family: Lora; font-style: italic;">No records found for your account.</p>';
+                    return;
+                }
+
+                const sortedDocs = snapshot.docs.sort((a, b) => b.data().createdAt?.seconds - a.data().createdAt?.seconds);
+
+                sortedDocs.forEach((record) => {
+                    const data = record.data();
+                    const date = data.createdAt?.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) || "Pending...";
+                    
+                    container.innerHTML += `
+                        <div class="my-record-card">
+                            <div>
+                                <h2 class="record-title">${data.title}</h2>
+                                <span class="record-date">${date} • ${data.category}</span>
+                            </div>
+                            <button class="btn-delete" onclick="window.deleteEntry('${record.id}')" title="Delete">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+                lucide.createIcons();
+            }, (error) => {
+                console.error("Snapshot error:", error);
+                document.getElementById('userRecordsContainer').innerHTML = "<p>Error loading records.</p>";
+            });
+        }
+
+        window.deleteEntry = async (id) => {
+            if(confirm("Permanently remove this record?")) {
+                try {
+                    await deleteDoc(doc(db, "insights", id));
+                } catch (error) {
+                    alert("Delete failed: " + error.message);
+                }
+            }
+        };
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth).then(() => { window.location.href = "index.html"; });
+        });
+    </script>
+</body>
+</html>

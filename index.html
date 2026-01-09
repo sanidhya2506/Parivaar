@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>परिवार | Parivaar - Collective Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --paper: #F4F1EA;
+            --ink: #1A1A1A;
+            --blue: #3D5A80;
+            --border: rgba(26, 26, 26, 0.2);
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        
+        /* FOOTER FIX: Ensure the body takes full height and uses flexbox */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--paper); 
+            color: var(--ink); 
+            line-height: 1.6; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* This container wraps everything except the footer */
+        .content-wrapper {
+            flex: 1 0 auto;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--paper); 
+            border-bottom: 2px solid var(--ink);
+            padding: 1.2rem 8%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            position: sticky; top: 0; z-index: 2000;
+        }
+        .logo { font-size: 2.2rem; font-weight: 900; color: var(--ink); text-decoration: none; letter-spacing: -2px; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--ink); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* HAMBURGER BUTTON */
+        .menu-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--ink); padding: 5px; }
+
+        /* HERO */
+        .hero { padding: 8rem 8% 5rem; border-bottom: 1px solid var(--border); }
+        .hero span { font-size: 0.8rem; font-weight: 900; letter-spacing: 4px; color: var(--ink); margin-bottom: 1rem; display: block; }
+        .hero h1 { font-family: 'Lora', serif; font-size: clamp(2.5rem, 7vw, 5rem); margin: 0; line-height: 1.1; font-weight: 400; letter-spacing: -2px; }
+        .hero p { font-size: 1.3rem; color: #333; max-width: 700px; margin: 2.5rem 0; font-family: 'Lora', serif; }
+
+        /* PROCESS SECTION */
+        .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-bottom: 1px solid var(--border); }
+        .step { padding: 4rem 8%; border-right: 1px solid var(--border); }
+        .step:last-child { border-right: none; }
+        .step h3 { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.6; }
+        .step p { font-size: 1.1rem; font-family: 'Lora', serif; margin: 0; }
+
+        /* FEED SECTION */
+        .feed-section { padding: 6rem 8%; max-width: 1000px; margin: 0 auto; }
+        .section-label { font-size: 0.7rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 4rem; display: block; }
+        
+        .post-card { padding-bottom: 4rem; margin-bottom: 4rem; border-bottom: 1px solid var(--border); }
+        .post-card h2 { font-family: 'Lora', serif; font-size: clamp(1.8rem, 4vw, 2.5rem); margin: 1.5rem 0; }
+        
+        .prevention-box { border-left: 3px solid var(--ink); padding: 1rem 2rem; margin: 2rem 0; font-family: 'Lora', serif; font-style: italic; font-size: 1.2rem; }
+
+        /* INFO BLOCKS */
+        .info-block { padding: 6rem 8%; border-top: 1px solid var(--border); }
+        .helpline-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .helpline-list li { border: 1px solid var(--ink); padding: 1.5rem; }
+        .helpline-list b { display: block; font-size: 1.5rem; margin-top: 0.5rem; }
+
+        .faq-container { margin-top: 2rem; max-width: 800px; }
+        .faq-item { border-bottom: 1px solid var(--border); }
+        .faq-btn { width: 100%; text-align: left; padding: 1.5rem 0; background: none; border: none; font-size: 1.1rem; font-weight: 800; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--ink); }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; color: #555; font-family: 'Lora', serif; }
+        .faq-item.active .faq-content { max-height: 250px; padding-bottom: 1.5rem; }
+
+        /* FOOTER: Fixed to the bottom */
+        footer { 
+            flex-shrink: 0;
+            background: var(--paper); 
+            padding: 5rem 8% 4rem; 
+            border-top: 2px solid var(--ink);
+            text-align: center;
+        }
+        .footer-logo { font-size: 1.8rem; font-weight: 900; margin-bottom: 1.5rem; }
+        .made-by { font-weight: 900; font-size: 1.1rem; letter-spacing: 0.5px; margin-bottom: 1.5rem; }
+        .heart { color: var(--ink); display: inline-block; animation: pump 1.2s infinite; font-size: 1.4rem; vertical-align: middle; }
+        .social-icons { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+        .social-icons a { color: var(--ink); }
+
+        @keyframes pump { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+        /* RESPONSIVE MOBILE NAV */
+        @media (max-width: 768px) {
+            header { padding: 1rem 5%; }
+            .menu-toggle { display: block; }
+            
+            .nav-links {
+                position: fixed; top: 72px; left: 0; width: 100%; background: var(--paper);
+                flex-direction: column; padding: 0; border-bottom: 2px solid var(--ink);
+                transform: translateY(-150%); transition: 0.4s ease-in-out; z-index: 1999;
+                gap: 0;
+            }
+            .nav-links.active { transform: translateY(0); }
+            .nav-links a { width: 100%; text-align: center; padding: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+
+            .hero h1 { font-size: 2.8rem; }
+            .step { border-right: none; border-bottom: 1px solid var(--border); }
+            .info-block { padding: 4rem 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content-wrapper">
+        <header>
+            <a href="index.html" class="logo">परिवार</a>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i data-lucide="menu"></i>
+            </button>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Archives</a>
+                <a href="share.html">Document</a>
+                <a href="profile.html">Records</a>
+                <a href="login.html">Login</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <span>COLLECTIVE MEMORY</span>
+                <h1>Turning shared truth <br>into social safety.</h1>
+                <p>A minimalist archive designed to document social harm and provide actionable prevention nuggets for the community.</p>
+            </section>
+
+            <section class="process-grid">
+                <div class="step">
+                    <h3>I. Record</h3>
+                    <p>File a precise account of domestic or social malpractice for the archive.</p>
+                </div>
+                <div class="step">
+                    <h3>II. Isolate</h3>
+                    <p>Define the red flags and prevention steps discovered during the experience.</p>
+                </div>
+                <div class="step">
+                    <h3>III. Secure</h3>
+                    <p>Choose anonymity to protect yourself while your wisdom protects others.</p>
+                </div>
+            </section>
+
+            <section class="feed-section">
+                <span class="section-label">Public Records</span>
+                <div id="feed-container">
+                    <p>Syncing with archive...</p>
+                </div>
+            </section>
+
+            <section class="info-block">
+                <span class="section-label">Direct Support</span>
+                <ul class="helpline-list">
+                    <li>Women's Safety <b>1091</b></li>
+                    <li>Child Support <b>1098</b></li>
+                    <li>Elder Protection <b>14567</b></li>
+                    <li>LGBTQ+ Support <b>+91 88281 98352</b></li>
+                </ul>
+            </section>
+
+            <section class="info-block">
+                <span class="section-label">Common Inquiries</span>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <button class="faq-btn">How is my data stored? <i data-lucide="plus"></i></button>
+                        <div class="faq-content">We utilize secure Firebase encryption. Your documents are yours to manage, edit, or delete at any time via your profile.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-btn">Is the anonymity real? <i data-lucide="plus"></i></button>
+                        <div class="faq-content">Yes. When filing a report, the "Stay Anonymous" toggle ensures your user profile is never linked to the public post.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-btn">What constitutes a 'Prevention Nugget'? <i data-lucide="plus"></i></button>
+                        <div class="faq-content">A Prevention Nugget is a specific, actionable piece of advice derived from your experience. Instead of just sharing what happened, it highlights the "red flag" someone else should look out for to avoid a similar situation.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-btn">Can I report on behalf of someone else? <i data-lucide="plus"></i></button>
+                        <div class="faq-content">Yes, as long as the information is accurate and intended to help the community. We recommend using the 'Anonymous' feature if you are sharing a story that involves the privacy of others.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-logo">परिवार</div>
+        <div class="made-by">Made with <span class="heart">♡</span> by Sanidhya</div>
+        <div class="social-icons">
+            <a href="https://github.com/sanidhya2506"><i data-lucide="github"></i></a>
+            <a href="https://www.linkedin.com/in/sanidhya-sharma-22ba91237/"><i data-lucide="linkedin"></i></a>
+        </div>
+        <p style="font-size: 0.7rem; margin-top: 2.5rem; opacity: 0.5; letter-spacing: 1px;">&copy; 2026 ARCHIVE PROJECT</p>
+    </footer>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Nav Toggle Logic
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.setAttribute('data-lucide', 'x');
+            } else {
+                icon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        });
+
+        // Accordion Logic
+        document.querySelectorAll('.faq-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const parent = btn.parentElement;
+                document.querySelectorAll('.faq-item').forEach(i => { if(i !== parent) i.classList.remove('active'); });
+                parent.classList.toggle('active');
+            });
+        });
+
+        // Load Feed
+        const q = query(collection(db, "insights"), orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const container = document.getElementById('feed-container');
+            container.innerHTML = '';
+            if(snapshot.empty) {
+                container.innerHTML = '<h3 style="font-family:Lora">The archive is currently awaiting its first record.</h3>';
+                return;
+            }
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                container.innerHTML += `
+                    <article class="post-card">
+                        <small style="text-transform:uppercase; letter-spacing:2px; font-weight:900;">${data.category}</small>
+                        <h2>${data.title}</h2>
+                        <div style="font-family:Lora; font-size:1.2rem; color:#222;">${data.content}</div>
+                        <div class="prevention-box">
+                            <b>PREVENTION:</b> ${data.prevention}
+                        </div>
+                        <p style="font-size:0.7rem; font-weight:800; opacity:0.6; margin-top:1rem;">
+                            FILED BY: ${data.isAnonymous ? 'ANONYMOUS WITNESS' : (data.authorName ? data.authorName.toUpperCase() : 'USER')}
+                        </p>
+                    </article>`;
+            });
+        });
+    </script>
+</body>
+</html>
