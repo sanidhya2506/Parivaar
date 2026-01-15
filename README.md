@@ -30,6 +30,19 @@ Only **real experiences, real lessons, and real prevention**.
 https://sanidhya2506.github.io/Parivaar/
 
 ---
+## 📄 Research DOI
+
+**Parivaar — Community & Family-Oriented Digital Platform**
+
+🔗 **DOI:** https://doi.org/10.5281/zenodo.18252818  
+
+📚 *This software is published as a Zenodo research artifact to ensure traceability, academic reference, and reproducible development.*
+
+### 📖 Citation
+If you use this work, please cite it as:
+> Sanidhya Sharma. *Parivaar: Community & Family-Oriented Platform*. Zenodo. https://doi.org/10.5281/zenodo.18252818
+
+---
 
 ## 🧠 The Core Philosophy
 
